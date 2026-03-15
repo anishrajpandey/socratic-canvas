@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 
 export default function CanvasStream() {
   const canvasRef = useRef(null);
+  const remoteAudioRef = useRef(null);
   const isDrawing = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
   
@@ -9,6 +10,7 @@ export default function CanvasStream() {
   // We use useRef so that instantiating/storing streams does not
   // trigger a re-render or reset component state mid-draw.
   const mediaStreamRefs = useRef({ audio: null, video: null });
+  const peerConnectionRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -59,6 +61,54 @@ export default function CanvasStream() {
     isDrawing.current = false;
   };
 
+  const startWebRTC = async (audioStream, videoStream) => {
+    try {
+      const pc = new RTCPeerConnection();
+      peerConnectionRef.current = pc;
+
+      // Handle incoming remote tracks from Gemini
+      pc.ontrack = (event) => {
+        if (event.track.kind === 'audio' && remoteAudioRef.current) {
+          console.log('✅ Received remote audio track from Gemini');
+          remoteAudioRef.current.srcObject = event.streams[0];
+        }
+      };
+
+      // Attach tracks
+      if (audioStream) {
+        audioStream.getTracks().forEach(track => pc.addTrack(track, audioStream));
+      }
+      if (videoStream) {
+        videoStream.getTracks().forEach(track => pc.addTrack(track, videoStream));
+      }
+
+      // Create SDP Offer
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      // The API Call
+      const response = await fetch('http://localhost:8000/offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sdp: pc.localDescription.sdp, type: pc.localDescription.type }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+      }
+
+      const answer = await response.json();
+      
+      // Set the SDP Answer
+      await pc.setRemoteDescription(new RTCSessionDescription({ type: answer.type, sdp: answer.sdp }));
+      console.log('✅ WebRTC Peer Connection Established!');
+      
+    } catch (err) {
+      console.error("Failed to connect to signaling server. Is the Python backend running?", err);
+      throw err;
+    }
+  };
+
   const startSession = async () => {
     try {
       console.log('Requesting microphone access...');
@@ -72,6 +122,8 @@ export default function CanvasStream() {
       mediaStreamRefs.current.video = videoStream;
       console.log('✅ Captured Video MediaStream:', videoStream);
       
+      await startWebRTC(audioStream, videoStream);
+
       alert('Session start sequence complete! Check the browser console to verify MediaStreams.');
     } catch (err) {
       console.error('Failed to capture streams:', err);
@@ -81,6 +133,7 @@ export default function CanvasStream() {
 
   return (
     <div className="flex flex-col items-center w-full h-full p-8 relative">
+      <audio ref={remoteAudioRef} autoPlay style={{ display: 'none' }} />
       <div className="w-full max-w-5xl flex justify-between items-end mb-6">
         <div>
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-500">
