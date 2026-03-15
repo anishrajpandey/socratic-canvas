@@ -11,6 +11,7 @@ export default function CanvasStream() {
   // trigger a re-render or reset component state mid-draw.
   const mediaStreamRefs = useRef({ audio: null, video: null });
   const peerConnectionRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -59,6 +60,13 @@ export default function CanvasStream() {
 
   const stopDrawing = () => {
     isDrawing.current = false;
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
 
   const startWebRTC = async (audioStream, videoStream) => {
@@ -116,6 +124,25 @@ export default function CanvasStream() {
       mediaStreamRefs.current.audio = audioStream;
       console.log('✅ Captured Audio MediaStream:', audioStream);
       
+      // Start local Speech-to-Text to log what the user is saying
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onresult = (event) => {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          console.log(`🗣️ You said: "${transcript.trim()}"`);
+        };
+        recognition.start();
+        recognitionRef.current = recognition;
+      } else {
+        console.warn("SpeechRecognition API not supported in this browser. Can't log local transcript.");
+      }
+      
       const canvas = canvasRef.current;
       console.log('Extracting 1 FPS video stream from Native Canvas...');
       const videoStream = canvas.captureStream(1);
@@ -141,22 +168,30 @@ export default function CanvasStream() {
           </h1>
           <p className="text-slate-400 mt-2">Draw on the canvas. Click Start Session to capture your stream.</p>
         </div>
-        <button 
-          onClick={startSession}
-          className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          Start Session
-        </button>
+        <div className="flex gap-4">
+          <button 
+            onClick={clearCanvas}
+            className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Clear Canvas
+          </button>
+          <button 
+            onClick={startSession}
+            className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Start Session
+          </button>
+        </div>
       </div>
       
-      <div className="w-full max-w-5xl flex-1 max-h-[70vh] bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700/50">
+      <div className="w-full max-w-5xl flex-1 h-[70vh] bg-slate-800 rounded-2xl shadow-2xl overflow-y-auto border border-slate-700/50 relative">
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseOut={stopDrawing}
-          className="w-full h-full cursor-crosshair touch-none"
+          className="w-full h-[2000px] cursor-crosshair touch-none"
         />
       </div>
     </div>

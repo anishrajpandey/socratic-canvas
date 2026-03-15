@@ -7,6 +7,8 @@ import asyncio
 import fractions
 import websockets
 import av
+import ssl
+import certifi
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,17 +47,51 @@ class CustomAudioTrack(MediaStreamTrack):
         self.samples_per_frame = 480  # 20ms at 24000Hz
         self._timestamp = 0
         self.buffer = bytearray()
+        self.is_buffering = True
+        self.min_buffer_size = self.samples_per_frame * 2 * 10  # 200ms (10 frames)
 
     async def recv(self):
-        while len(self.buffer) < self.samples_per_frame * 2:
-            chunk = await self.queue.get()
-            self.buffer.extend(chunk)
+        # Drain available chunks
+        while not self.queue.empty():
+            try:
+                chunk = self.queue.get_nowait()
+                self.buffer.extend(chunk)
+            except asyncio.QueueEmpty:
+                break
+                
+        # If in buffering mode, gather data before playing
+        if self.is_buffering:
+            if len(self.buffer) < self.min_buffer_size:
+                try:
+                    chunk = await asyncio.wait_for(self.queue.get(), timeout=0.02)
+                    self.buffer.extend(chunk)
+                except asyncio.TimeoutError:
+                    pass
+            if len(self.buffer) >= self.min_buffer_size:
+                self.is_buffering = False
+            else:
+                # Output silence while buffering
+                return self._create_frame(bytes(self.samples_per_frame * 2))
 
+        # If not buffering, try to output audio
+        if len(self.buffer) < self.samples_per_frame * 2:
+            try:
+                # Wait briefly for a late packet
+                chunk = await asyncio.wait_for(self.queue.get(), timeout=0.05)
+                self.buffer.extend(chunk)
+            except asyncio.TimeoutError:
+                # Underrun! Buffer starved. Back to buffering mode.
+                self.is_buffering = True
+                return self._create_frame(bytes(self.samples_per_frame * 2))
+
+        # Output audio frame
         frame_bytes = self.buffer[:self.samples_per_frame * 2]
         self.buffer = self.buffer[self.samples_per_frame * 2:]
+        return self._create_frame(frame_bytes)
 
+    def _create_frame(self, frame_bytes):
         frame = av.AudioFrame(format='s16', layout='mono', samples=self.samples_per_frame)
-        frame.planes[0].update(bytes(frame_bytes))
+        frame.planes[0].update(frame_bytes)
         frame.sample_rate = 24000
         frame.pts = self._timestamp
         frame.time_base = self.time_base
@@ -67,8 +103,10 @@ async def gemini_ws_loop(ws, custom_audio_track):
     try:
         async for msg in ws:
             if isinstance(msg, bytes):
-                continue
+                msg = msg.decode('utf-8')
             response = json.loads(msg)
+            logger.info(f"DEBUG Gemini msg keys: {list(response.keys())}")
+            
             if "serverContent" in response:
                 model_turn = response["serverContent"].get("modelTurn")
                 if model_turn:
@@ -79,6 +117,8 @@ async def gemini_ws_loop(ws, custom_audio_track):
                                 audio_bytes = base64.b64decode(inline_data["data"])
                                 logger.info(f"🎤 Received Gemini audio chunk! ({len(audio_bytes)} bytes)")
                                 await custom_audio_track.queue.put(audio_bytes)
+                        elif "text" in part:
+                            logger.info(f"🤖 Gemini Text: {part['text'].strip()}")
             elif "error" in response:
                 logger.error(f"❌ Gemini API Error: {response['error']}")
     except Exception as e:
@@ -106,21 +146,25 @@ async def forward_video(ws, track):
         logger.info(f"Video forwarding ended: {e}")
 
 async def forward_audio(ws, track):
+    resampler = av.AudioResampler(format='s16', layout='mono', rate=16000)
     try:
         while True:
             frame = await track.recv()
-            audio_bytes = frame.planes[0].to_bytes()
-            audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
-            
-            payload = {
-                "realtimeInput": {
-                    "mediaChunks": [{
-                        "mimeType": f"audio/pcm;rate={frame.sample_rate}",
-                        "data": audio_base64
-                    }]
+            resampled_frames = resampler.resample(frame)
+            for r_frame in resampled_frames:
+                # Get the raw PCM bytes directly from the resampled frame array
+                audio_bytes = r_frame.to_ndarray().tobytes()
+                audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
+                
+                payload = {
+                    "realtimeInput": {
+                        "mediaChunks": [{
+                            "mimeType": "audio/pcm;rate=16000",
+                            "data": audio_base64
+                        }]
+                    }
                 }
-            }
-            await ws.send(json.dumps(payload))
+                await ws.send(json.dumps(payload))
     except Exception as e:
         logger.info(f"Audio forwarding ended: {e}")
 
@@ -129,22 +173,46 @@ async def gemini_session_manager(pc, custom_audio_track, video_track=None, audio
         logger.error("❌ GEMINI_API_KEY not set in .env")
         return
         
-    url = f"wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key={GEMINI_API_KEY}"
+    url = f"wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key={GEMINI_API_KEY}"
     logger.info("Attempting to connect to Gemini Multimodal Live API...")
     try:
-        async with websockets.connect(url) as ws:
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        async with websockets.connect(url, ssl=ssl_context) as ws:
             logger.info("✅ Successfully connected to Gemini API WebSocket!")
             setup_msg = {
                 "setup": {
+                    "model": "models/gemini-2.5-flash-native-audio-preview-12-2025",
                     "systemInstruction": {
                         "parts": [{
-                            "text": "You are a ruthless, Socratic tutor. You are watching the user write notes and listening to them. DO NOT read their notes back to them. If they make a logical error in their drawing or logic, interrupt them immediately. Ask challenging follow-up questions. Keep responses under two sentences."
+                            "text": "You are a helpful, human-like study buddy and expert fact-checker. You must constantly watch the ENTIRE canvas screen. DO NOT WAIT FOR ME TO SPEAK. If you see me write an incorrect fact, logic error, or math mistake like '2*5=0' on the screen, you MUST SPEAK UP AND INTERRUPT ME IMMEDIATELY to correct it. Your primary job is to proactively guard the canvas against mistakes as I am actively writing them in real-time. Do not be polite about waiting your turn; just jump straight in and tell me it's wrong! If I do ask you a question, answer it concisely based on the full context of the notes on the screen."
                         }]
+                    },
+                    "generationConfig": {
+                        "responseModalities": ["AUDIO"],
+                        "speechConfig": {
+                            "voiceConfig": {
+                                "prebuiltVoiceConfig": {
+                                    "voiceName": "Puck"
+                                }
+                            }
+                        }
                     }
                 }
             }
             await ws.send(json.dumps(setup_msg))
             logger.info("✅ Sent Setup Message (Persona) to Gemini.")
+
+            initial_msg = {
+                "clientContent": {
+                    "turns": [{
+                        "role": "user",
+                        "parts": [{"text": "Hello! We are studying together. Please look at the entire canvas screen I'm sharing. Since you are my fact-checker, if you see me write a mistake, interrupt me! Otherwise, I'll just write my notes and ask you questions when I need help getting unstuck."}]
+                    }],
+                    "turnComplete": True
+                }
+            }
+            await ws.send(json.dumps(initial_msg))
+            logger.info("✅ Sent initial greeting prompt to trigger Gemini audio.")
 
             asyncio.create_task(gemini_ws_loop(ws, custom_audio_track))
 

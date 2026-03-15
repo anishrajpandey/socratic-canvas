@@ -1,0 +1,229 @@
+INFO:     Will watch for changes in these directories: ['/Users/anishrajpandey/Code Playground/hackathons/gemini-liveai-challenge/live-canvas-agent/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [10519] using StatReload
+INFO:     Started server process [10521]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:54316 - "OPTIONS /offer HTTP/1.1" 200 OK
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54316 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(8valHC8pZ6 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 53298 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 63277) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 53298)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 63277) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 53298)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:main:Audio forwarding ended: 'av.audio.plane.AudioPlane' object has no attribute 'to_bytes'
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(Wu02BMLqz8 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 55628 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 63277) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 55628)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 63277) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 55628)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(MTnTHifGug 1 udp 1853693695 192.168.1.185 62250 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 63695) -> ('192.168.1.185', 62250)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 63695) -> ('192.168.1.185', 62250)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+INFO:main:Video forwarding ended: No module named 'PIL'
+INFO:     127.0.0.1:54420 - "OPTIONS /offer HTTP/1.1" 200 OK
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54420 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(2T6DZRe7ZH 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 57752 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 64715) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 57752)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 64715) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 57752)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(2) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:main:Audio forwarding ended: 'av.audio.plane.AudioPlane' object has no attribute 'to_bytes'
+ERROR:main:Gemini WS Loop error: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(bFDHeyNg3b 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 62470 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 64715) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 62470)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 64715) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 62470)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(trX8atfhaF 1 udp 1853693695 192.168.1.185 54171 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 58979) -> ('192.168.1.185', 54171)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 58979) -> ('192.168.1.185', 54171)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:main:Video forwarding ended: 
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54422 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(caGwrxZT4v 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 51956 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58053) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 51956)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58053) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 51956)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(4) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:main:Audio forwarding ended: 'av.audio.plane.AudioPlane' object has no attribute 'to_bytes'
+ERROR:main:Gemini WS Loop error: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(Ctdkex0rjJ 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 50931 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58053) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 50931)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58053) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 50931)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(hvTUK0mrUJ 1 udp 1853693695 192.168.1.185 63478 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('192.168.1.185', 52437) -> ('192.168.1.185', 63478)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('192.168.1.185', 52437) -> ('192.168.1.185', 63478)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) Consent to send expired
+INFO:main:Video forwarding ended: No module named 'PIL'
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10521]
+INFO:     Started server process [11018]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54570 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(BcBZFZScyk 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 54092 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 61222) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 54092)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 61222) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 54092)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(CRYO0zLnoj 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 55732 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 61222) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 55732)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 61222) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 55732)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+INFO:main:Audio forwarding ended: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(6YJKXt8gpV 1 udp 1853693695 192.168.1.185 63695 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 63934) -> ('192.168.1.185', 63695)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 63934) -> ('192.168.1.185', 63695)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:main:Video forwarding ended: received 1011 (internal error) Internal error encountered.; then sent 1011 (internal error) Internal error encountered.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11018]
+INFO:     Started server process [11303]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54586 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(2K9NeYfISZ 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 50287 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 55948) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 50287)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 55948) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 50287)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(Mt27K5aquM 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 56616 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 55948) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 56616)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 55948) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 56616)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Audio forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(ywXOr9iT1f 1 udp 1853693695 192.168.1.185 61452 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 52300) -> ('192.168.1.185', 61452)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 52300) -> ('192.168.1.185', 61452)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:54586 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(hY7nUHHy8E 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 58141 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 62656) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 58141)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 62656) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 58141)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(2) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(DFWJq3YG8L 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 54936 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 62656) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 54936)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 62656) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 54936)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Audio forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(PVQ02vxWp3 1 udp 1853693695 192.168.1.185 56954 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 57220) -> ('192.168.1.185', 56954)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 57220) -> ('192.168.1.185', 56954)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:main:Video forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Video forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11303]
+INFO:     Started server process [11808]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:55088 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(ysX5zE8sgQ 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 52234 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58658) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 52234)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58658) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 52234)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(9WZ5IZtsJc 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 63961 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58658) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 63961)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58658) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 63961)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) Discovered peer reflexive candidate Candidate(GygvpjsRZd 1 udp 1853693695 192.168.1.185 63186 typ prflx)
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 59071) -> ('192.168.1.185', 63186)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(0) Check CandidatePair(('192.168.1.185', 59071) -> ('192.168.1.185', 63186)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Audio forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Video forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:55276 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(xxhl1fvBs1 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 52909 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58188) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 52909)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58188) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 52909)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(2) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(E7yHpvLKtC 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 52467 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58188) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 52467)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 58188) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 52467)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Audio forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:aioice.ice:Connection(2) Discovered peer reflexive candidate Candidate(UhFre3EgSM 1 udp 1853693695 192.168.1.185 55602 typ prflx)
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 61902) -> ('192.168.1.185', 55602)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(2) Check CandidatePair(('192.168.1.185', 61902) -> ('192.168.1.185', 55602)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(0) Consent to send expired
+INFO:main:Video forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:     127.0.0.1:55591 - "OPTIONS /offer HTTP/1.1" 200 OK
+INFO:main:Track received: audio
+INFO:main:Track received: video
+INFO:main:Starting Gemini session manager
+INFO:main:Attempting to connect to Gemini Multimodal Live API...
+INFO:     127.0.0.1:55591 - "POST /offer HTTP/1.1" 200 OK
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(JSR5dmxQq2 1 udp 1853829887 fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549 56067 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 53599) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 56067)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 53599) -> ('fd00:a08a:6cd:c359:14fb:c3f3:4ca9:2549', 56067)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:aioice.ice:Connection(4) ICE completed
+INFO:main:✅ Successfully connected to Gemini API WebSocket!
+INFO:main:✅ Sent Setup Message (Persona) to Gemini.
+INFO:main:Started Gemini WebSocket listener loop.
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(DViA1DGYl7 1 udp 1853761791 2603:8081:30f0:ae60:90b9:891f:8b9e:93c0 64565 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 53599) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 64565)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('2603:8081:30f0:ae60:ae:4702:3890:4083', 53599) -> ('2603:8081:30f0:ae60:90b9:891f:8b9e:93c0', 64565)) State.IN_PROGRESS -> State.SUCCEEDED
+ERROR:main:Gemini WS Loop error: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:main:Audio forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:aioice.ice:Connection(4) Discovered peer reflexive candidate Candidate(KVsOfQrBRR 1 udp 1853693695 192.168.1.185 61743 typ prflx)
+INFO:aioice.ice:Connection(4) Check CandidatePair(('192.168.1.185', 64181) -> ('192.168.1.185', 61743)) State.WAITING -> State.IN_PROGRESS
+INFO:aioice.ice:Connection(4) Check CandidatePair(('192.168.1.185', 64181) -> ('192.168.1.185', 61743)) State.IN_PROGRESS -> State.SUCCEEDED
+INFO:main:Video forwarding ended: received 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod; then sent 1008 (policy violation) models/gemini-2.0-flash-exp is not found for API version v1alpha, or is not supported for bidiGenerateContent. Call ListMod
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11808]
+INFO:     Stopping reloader process [10519]
