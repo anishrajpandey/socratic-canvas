@@ -14,9 +14,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from aiortc import RTCPeerConnection, RTCSessionDescription
-from aiortc.mediastreams import MediaStreamTrack
+from aiortc.mediastreams import MediaStreamTrack, MediaStreamError
 
-load_dotenv()
+load_dotenv(override=True)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 logging.basicConfig(level=logging.INFO)
@@ -48,45 +48,51 @@ class CustomAudioTrack(MediaStreamTrack):
         self._timestamp = 0
         self.buffer = bytearray()
         self.is_buffering = True
-        self.min_buffer_size = self.samples_per_frame * 2 * 10  # 200ms (10 frames)
+        self.min_buffer_size = 480 * 2 * 5  # 100ms cushion (5 frames)
 
     async def recv(self):
-        # Drain available chunks
         while not self.queue.empty():
             try:
-                chunk = self.queue.get_nowait()
-                self.buffer.extend(chunk)
+                self.buffer.extend(self.queue.get_nowait())
             except asyncio.QueueEmpty:
                 break
                 
-        # If in buffering mode, gather data before playing
+        frame_size = self.samples_per_frame * 2
+
         if self.is_buffering:
             if len(self.buffer) < self.min_buffer_size:
                 try:
-                    chunk = await asyncio.wait_for(self.queue.get(), timeout=0.02)
+                    chunk = await asyncio.wait_for(self.queue.get(), timeout=0.05)
                     self.buffer.extend(chunk)
                 except asyncio.TimeoutError:
-                    pass
+                    if len(self.buffer) > 0:
+                        # We timed out waiting for more buffer, but we have some data.
+                        # It might be a very short response. Stop buffering and play it.
+                        self.is_buffering = False
+            
             if len(self.buffer) >= self.min_buffer_size:
                 self.is_buffering = False
-            else:
-                # Output silence while buffering
-                return self._create_frame(bytes(self.samples_per_frame * 2))
+            
+            if self.is_buffering:
+                return self._create_frame(bytes(frame_size))
 
-        # If not buffering, try to output audio
-        if len(self.buffer) < self.samples_per_frame * 2:
+        if len(self.buffer) < frame_size:
             try:
-                # Wait briefly for a late packet
-                chunk = await asyncio.wait_for(self.queue.get(), timeout=0.05)
+                chunk = await asyncio.wait_for(self.queue.get(), timeout=0.02)
                 self.buffer.extend(chunk)
             except asyncio.TimeoutError:
-                # Underrun! Buffer starved. Back to buffering mode.
-                self.is_buffering = True
-                return self._create_frame(bytes(self.samples_per_frame * 2))
+                if len(self.buffer) > 0:
+                    # Flush partial tail frame padded with silence
+                    padded = self.buffer + bytearray(frame_size - len(self.buffer))
+                    self.buffer.clear()
+                    self.is_buffering = True  # reset to buffering state
+                    return self._create_frame(padded)
+                else:
+                    self.is_buffering = True
+                    return self._create_frame(bytes(frame_size))
 
-        # Output audio frame
-        frame_bytes = self.buffer[:self.samples_per_frame * 2]
-        self.buffer = self.buffer[self.samples_per_frame * 2:]
+        frame_bytes = self.buffer[:frame_size]
+        self.buffer = self.buffer[frame_size:]
         return self._create_frame(frame_bytes)
 
     def _create_frame(self, frame_bytes):
@@ -142,8 +148,10 @@ async def forward_video(ws, track):
                 }
             }
             await ws.send(json.dumps(payload))
+    except MediaStreamError:
+        logger.info("Video track ended naturally.")
     except Exception as e:
-        logger.info(f"Video forwarding ended: {e}")
+        logger.exception("Video forwarding error:")
 
 async def forward_audio(ws, track):
     resampler = av.AudioResampler(format='s16', layout='mono', rate=16000)
@@ -165,8 +173,10 @@ async def forward_audio(ws, track):
                     }
                 }
                 await ws.send(json.dumps(payload))
+    except MediaStreamError:
+        logger.info("Audio track ended naturally.")
     except Exception as e:
-        logger.info(f"Audio forwarding ended: {e}")
+        logger.exception("Audio forwarding error:")
 
 async def gemini_session_manager(pc, custom_audio_track, video_track=None, audio_track=None):
     if not GEMINI_API_KEY:

@@ -147,6 +147,15 @@ export default function CanvasStream() {
           }
           console.log(`🗣️ You said: "${transcript.trim()}"`);
         };
+        recognition.onerror = (event) => {
+          console.error("Speech recognition error:", event.error);
+        };
+        recognition.onend = () => {
+          console.log("Speech recognition ended. Restarting...");
+          setTimeout(() => {
+            try { recognition.start(); } catch (e) {}
+          }, 1000);
+        };
         recognition.start();
         recognitionRef.current = recognition;
       } else {
@@ -160,8 +169,7 @@ export default function CanvasStream() {
       console.log('✅ Captured Video MediaStream:', videoStream);
       
       await startWebRTC(audioStream, videoStream);
-
-      alert('Session start sequence complete! Check the browser console to verify MediaStreams.');
+      console.log('✅ Session start sequence complete! Check the browser console to verify MediaStreams.');
     } catch (err) {
       console.error('Failed to capture streams:', err);
       alert('Error fetching sensors: ' + err.message);
